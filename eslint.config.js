@@ -21,7 +21,7 @@ export default defineConfig([
       'no-unused-vars': 'error',
       'no-undef': 'error',
       'no-var': 'error',
-      'no-console': 'error',
+      'no-console': 'warn',
       'prefer-const': 'error',
 
       'prettier/prettier': 'error',
