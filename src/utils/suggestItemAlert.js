@@ -2,7 +2,7 @@ import { updateSelOpts } from '../components/cart/productSelect';
 import { initProdList } from '../initialItems';
 
 export const suggestItemAlert = () => {
-  const selectedProdId = initProdList[0].id;
+  let selectedProdId = initProdList[0].id;
 
   setTimeout(function () {
     setInterval(function () {

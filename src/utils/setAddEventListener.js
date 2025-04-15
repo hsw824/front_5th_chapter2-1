@@ -29,7 +29,7 @@ const setAddEventListener = () => {
         orderedList.appendChild(newItem);
         itemToAdd.quantity--;
       }
-      calculateCart(totalAmount, itemCount, orderedList, paymentInfo, soldOutInfo);
+      calculateCart();
       selectedProdId = selItem;
     }
   });
@@ -61,7 +61,7 @@ const setAddEventListener = () => {
       prod.quantity += remQty;
       itemElem.remove();
     }
-    calculateCart(totalAmount, itemCount, orderedList, paymentInfo, soldOutInfo);
+    calculateCart();
     // }
   });
 };
