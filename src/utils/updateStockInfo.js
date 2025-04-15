@@ -1,6 +1,9 @@
 import { initProdList } from '../initialItems';
 
-export function updateStockInfo(soldOutInfo) {
+export function updateStockInfo() {
+  const soldOutInfo = document.getElementById('stock-status');
+  if (!soldOutInfo) return;
+
   var infoMsg = '';
   initProdList.forEach(function (item) {
     if (item.quantity < 5) {

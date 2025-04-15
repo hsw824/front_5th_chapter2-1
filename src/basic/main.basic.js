@@ -1,16 +1,16 @@
 import { updateSelOpts } from '../components/cart/productSelect';
-import { initProdList } from '../initialItems';
 import { calculateCart } from '../utils/calculateCart';
 import { createElement } from '../utils/createElement';
 import { flashSaleItemAlert } from '../utils/flashSaleItemAlert';
+import { globalStore } from '../utils/globalStore';
 import { suggestItemAlert } from '../utils/suggestItemAlert';
 
 // TODO:createElement 유틸함수 작성 혹은 항목들 만드는 함수 작성 적어도 id className은 유틸로 잡을 수 있을 것 같음 이것들도 전역에 놓을 필요가 없을것 같은디
 // id 모두 상수화 해도 될 것 같음
 
 //initProdList까지 포함해서 state
-let totalAmount = 0;
-let itemCount = 0;
+const { getState } = globalStore;
+const { prodList } = getState();
 
 const prodSelect = createElement('select', { id: 'product-select', className: 'border rounded p-2 mr-2' });
 const addProdBtn = createElement('button', {
@@ -31,7 +31,7 @@ const renderUi = () => {
   });
   const cartTitle = createElement('h1', { className: 'text-2xl font-bold mb-4', textContent: '장바구니' });
 
-  updateSelOpts(prodSelect, initProdList);
+  updateSelOpts(prodSelect, prodList);
 
   wrapper.appendChild(cartTitle);
   wrapper.appendChild(orderedList);
@@ -47,11 +47,11 @@ const renderUi = () => {
 
 const setAddEventListener = () => {
   addProdBtn.addEventListener('click', function () {
-    let selectedProdId = initProdList[0].id;
+    let selectedProdId = prodList[0].id;
 
     var selItem = prodSelect.value;
 
-    var itemToAdd = initProdList.find(function (p) {
+    var itemToAdd = prodList.find(function (p) {
       return p.id === selItem;
     });
 
@@ -76,7 +76,7 @@ const setAddEventListener = () => {
         orderedList.appendChild(newItem);
         itemToAdd.quantity--;
       }
-      calculateCart(totalAmount, itemCount, orderedList, paymentInfo, soldOutInfo);
+      calculateCart(orderedList, paymentInfo, soldOutInfo);
       selectedProdId = selItem;
     }
   });
@@ -86,7 +86,7 @@ const setAddEventListener = () => {
     // if (tgt.classList.contains('quantity-change') || tgt.classList.contains('remove-item')) {
     var prodId = tgt.dataset.productId;
     var itemElem = document.getElementById(prodId);
-    var prod = initProdList.find(function (p) {
+    var prod = prodList.find(function (p) {
       return p.id === prodId;
     });
 
@@ -108,14 +108,14 @@ const setAddEventListener = () => {
       prod.quantity += remQty;
       itemElem.remove();
     }
-    calculateCart(totalAmount, itemCount, orderedList, paymentInfo, soldOutInfo);
+    calculateCart(orderedList, paymentInfo, soldOutInfo);
     // }
   });
 };
 
 const renderCartComponent = () => {
   renderUi();
-  calculateCart(totalAmount, itemCount, orderedList, paymentInfo, soldOutInfo);
+  calculateCart(orderedList, paymentInfo, soldOutInfo);
 
   setAddEventListener();
   flashSaleItemAlert();

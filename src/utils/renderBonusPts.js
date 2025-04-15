@@ -1,6 +1,13 @@
 import { createElement } from './createElement';
+import { globalStore } from './globalStore';
 
-export const renderBonusPts = (paymentInfo, totalAmount) => {
+export const renderBonusPts = () => {
+  const { getState } = globalStore;
+  const { totalAmount } = getState();
+
+  const paymentInfo = document.getElementById('cart-total');
+  if (!paymentInfo) return;
+
   let purchasePoints = 0;
 
   purchasePoints = Math.floor(totalAmount / 1000);

@@ -2,9 +2,22 @@ import { initProdList } from '../initialItems';
 import { renderBonusPts } from '../utils/renderBonusPts';
 import { updateStockInfo } from '../utils/updateStockInfo';
 import { createElement } from './createElement';
+import { globalStore } from './globalStore';
 
-export const calculateCart = (totalAmount, itemCount, orderedList, paymentInfo, soldOutInfo) => {
+export const calculateCart = () => {
+  const { getState, setState } = globalStore;
+  const { totalAmount, itemCount } = getState();
+
+  const orderedList = document.getElementById('cart-items');
+  const paymentInfo = document.getElementById('cart-total');
+  const soldOutInfo = document.getElementById('stock-status');
+
+  if (!orderedList) return;
+  if (!paymentInfo) return;
+  if (!soldOutInfo) return;
+
   const cartItems = orderedList.children;
+
   var subTot = 0;
   for (var i = 0; i < cartItems.length; i++) {
     (function () {
@@ -18,7 +31,7 @@ export const calculateCart = (totalAmount, itemCount, orderedList, paymentInfo, 
       var q = parseInt(cartItems[i].querySelector('span').textContent.split('x ')[1]);
       var itemTot = curItem.price * q;
       var disc = 0;
-      itemCount += q;
+      setState({ itemCount: itemCount + q });
       subTot += itemTot;
       if (q >= 10) {
         if (curItem.id === 'p1') disc = 0.1;
@@ -27,7 +40,7 @@ export const calculateCart = (totalAmount, itemCount, orderedList, paymentInfo, 
         else if (curItem.id === 'p4') disc = 0.05;
         else if (curItem.id === 'p5') disc = 0.25;
       }
-      totalAmount += itemTot * (1 - disc);
+      setState({ totalAmount: totalAmount + itemTot * (1 - disc) });
     })();
   }
   let discRate = 0;
@@ -35,7 +48,8 @@ export const calculateCart = (totalAmount, itemCount, orderedList, paymentInfo, 
     var bulkDisc = totalAmount * 0.25;
     var itemDisc = subTot - totalAmount;
     if (bulkDisc > itemDisc) {
-      totalAmount = subTot * (1 - 0.25);
+      setState({ totalAmount: subTot * (1 - 0.25) });
+
       discRate = 0.25;
     } else {
       discRate = (subTot - totalAmount) / subTot;
@@ -44,7 +58,8 @@ export const calculateCart = (totalAmount, itemCount, orderedList, paymentInfo, 
     discRate = (subTot - totalAmount) / subTot;
   }
   if (new Date().getDay() === 2) {
-    totalAmount *= 1 - 0.1;
+    setState({ totalAmount: totalAmount * 1 - 0.1 });
+
     discRate = Math.max(discRate, 0.1);
   }
   paymentInfo.textContent = '총액: ' + Math.round(totalAmount) + '원';
