@@ -1,10 +1,6 @@
-import { setSelectOptions } from '../components/cart/productSelect';
+import { setSelectOptions } from '../components/cart/setSelectOptions';
 import { calculateCart } from './calculateCart';
 import { createElement } from './createElement';
-import { globalStore } from './globalStore';
-
-const { getState } = globalStore;
-const { prodList } = getState();
 
 export const renderUi = () => {
   // 컴포넌트 혹은 따로 선언 분리
