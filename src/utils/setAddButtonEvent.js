@@ -53,7 +53,7 @@ export const setAddButtonEvent = () => {
     const selItem = prodSelect.value;
     const itemToAdd = prodList.find((p) => p.id === selItem);
 
-    if (!itemToAdd || itemToAdd.quantity < 0) return;
+    if (!itemToAdd || itemToAdd.quantity <= 0) return;
 
     const selectedItem = document.getElementById(itemToAdd.id);
     if (selectedItem) {
