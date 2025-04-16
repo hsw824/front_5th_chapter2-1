@@ -1,4 +1,4 @@
-import { updateSelOpts } from '../components/cart/productSelect';
+import { setSelectOptions } from '../components/cart/productSelect';
 import { calculateCart } from './calculateCart';
 import { createElement } from './createElement';
 import { globalStore } from './globalStore';
@@ -7,6 +7,7 @@ const { getState } = globalStore;
 const { prodList } = getState();
 
 export const renderUi = () => {
+  // 컴포넌트 혹은 따로 선언 분리
   const root = document.getElementById('app');
   const container = createElement('div', { className: 'bg-gray-100 p-8' });
   const wrapper = createElement('div', {
@@ -26,8 +27,6 @@ export const renderUi = () => {
 
   const cartTitle = createElement('h1', { className: 'text-2xl font-bold mb-4', textContent: '장바구니' });
 
-  updateSelOpts(prodSelect, prodList);
-
   wrapper.appendChild(cartTitle);
   wrapper.appendChild(orderedList);
   wrapper.appendChild(paymentInfo);
@@ -38,6 +37,8 @@ export const renderUi = () => {
   container.appendChild(wrapper);
 
   root.appendChild(container);
+
+  setSelectOptions();
 
   calculateCart();
 };
