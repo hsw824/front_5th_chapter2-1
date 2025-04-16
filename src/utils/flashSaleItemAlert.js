@@ -1,23 +1,25 @@
-// import { initProdList } from '../initialItems';
+import { TIMER_NUMBER, SALE_NUMBER, RANDOM_NUMBER } from '../constant/randomNumber';
 import { globalStore } from './globalStore';
 
 let timer = null;
+const { prodList } = globalStore.getState();
+
+const flashSaleInterval = () => {
+  const randomIndex = Math.floor(Math.random() * prodList.length);
+  const flashSaleItem = prodList[randomIndex];
+
+  if (RANDOM_NUMBER && flashSaleItem.quantity > 0) {
+    flashSaleItem.price = Math.round(flashSaleItem.price * SALE_NUMBER.FLASH);
+    alert(`번개세일! ${flashSaleItem.name} 이(가) 20% 할인 중입니다!`);
+  }
+};
 
 export const flashSaleItemAlert = () => {
-  const { prodList } = globalStore.getState();
-
   if (!timer) {
-    setTimeout(function () {
-      timer = setInterval(function () {
-        const flashSaleItem = prodList[Math.floor(Math.random() * prodList.length)];
-        if (Math.random() < 0.3 && flashSaleItem.quantity > 0) {
-          flashSaleItem.price = Math.round(flashSaleItem.price * 0.8);
-          alert('번개세일! ' + flashSaleItem.name + '이(가) 20% 할인 중입니다!');
-          // updateSelOpts(prodSelect, initProdList);
-        }
-      }, 30000);
-    }, Math.random() * 10000);
+    setTimeout(() => {
+      timer = setInterval(flashSaleInterval, TIMER_NUMBER.FLASH_INTERVAL);
+    }, TIMER_NUMBER.FLASH_TIME);
   } else {
-    clearTimeout(timer);
+    clearInterval(timer);
   }
 };
