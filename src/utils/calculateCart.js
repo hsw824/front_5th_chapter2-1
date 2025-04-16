@@ -2,6 +2,11 @@ import { renderBonusPoints } from './renderBonusPoints';
 import { updateStockInfo } from '../utils/updateStockInfo';
 import { createElement } from './createElement';
 import { globalStore } from './globalStore';
+import { DISCOUNT } from '../constant/randomNumber';
+
+const isTuesday = () => {
+  return new Date().getDay() === 2;
+};
 
 export const calculateCart = () => {
   const { getState, setState } = globalStore;
@@ -13,60 +18,50 @@ export const calculateCart = () => {
 
   if (!orderedList || !paymentInfo || !soldOutInfo) return;
 
-  const cartItems = orderedList.children;
+  const cartItems = Array.from(orderedList.children);
 
   // 임시 변수로 계산 결과 저장
   let newTotalAmount = 0;
   let newItemCount = 0;
-  let subTot = 0;
+  let preDiscountTotal = 0;
 
   // 각 아이템 계산
-  for (let i = 0; i < cartItems.length; i++) {
-    let curItem;
-    for (let j = 0; j < prodList.length; j++) {
-      if (prodList[j].id === cartItems[i].id) {
-        curItem = prodList[j];
-        break;
-      }
+  cartItems.forEach((cartItem) => {
+    const currentItem = prodList.find((prodItem) => prodItem.id === cartItem.id);
+    const currentQuantity = parseInt(cartItem.querySelector('span').textContent.split('x ')[1]);
+    const currentItemTotalPrice = currentItem.price * currentQuantity;
+
+    let discount = 0;
+    newItemCount += currentQuantity;
+    preDiscountTotal += currentItemTotalPrice;
+
+    if (currentQuantity >= DISCOUNT.FOR_MIN_QUANTITY) {
+      discount = DISCOUNT.ITEM_RATIO[currentItem.id];
     }
 
-    const q = parseInt(cartItems[i].querySelector('span').textContent.split('x ')[1]);
-    const itemTot = curItem.price * q;
-    let disc = 0;
-
-    newItemCount += q;
-    subTot += itemTot;
-
-    if (q >= 10) {
-      if (curItem.id === 'p1') disc = 0.1;
-      else if (curItem.id === 'p2') disc = 0.15;
-      else if (curItem.id === 'p3') disc = 0.2;
-      else if (curItem.id === 'p4') disc = 0.05;
-      else if (curItem.id === 'p5') disc = 0.25;
-    }
-
-    newTotalAmount += itemTot * (1 - disc);
-  }
+    newTotalAmount += currentItemTotalPrice * (DISCOUNT.FULL_PRICE_RATIO - discount);
+  });
 
   // 할인율 계산
-  let discRate = 0;
-  if (newItemCount >= 30) {
-    const bulkDisc = newTotalAmount * 0.25;
-    const itemDisc = subTot - newTotalAmount;
-    if (bulkDisc > itemDisc) {
-      newTotalAmount = subTot * (1 - 0.25);
-      discRate = 0.25;
+  let discountRate = 0;
+
+  if (newItemCount >= DISCOUNT.BULK_DISCOUNT.QUANTITY) {
+    const bulkDiscount = newTotalAmount * DISCOUNT.BULK_DISCOUNT.RATIO;
+    const itemDiscount = preDiscountTotal - newTotalAmount;
+    if (bulkDiscount > itemDiscount) {
+      newTotalAmount = preDiscountTotal * (DISCOUNT.FULL_PRICE_RATIO - DISCOUNT.BULK_DISCOUNT.RATIO);
+      discountRate = DISCOUNT.BULK_DISCOUNT.RATIO;
     } else {
-      discRate = (subTot - newTotalAmount) / subTot;
+      discountRate = (preDiscountTotal - newTotalAmount) / preDiscountTotal;
     }
   } else {
-    discRate = (subTot - newTotalAmount) / subTot;
+    discountRate = (preDiscountTotal - newTotalAmount) / preDiscountTotal;
   }
 
   // 화요일 할인
-  if (new Date().getDay() === 2) {
-    newTotalAmount *= 1 - 0.1;
-    discRate = Math.max(discRate, 0.1);
+  if (isTuesday()) {
+    newTotalAmount *= DISCOUNT.FULL_PRICE_RATIO - DISCOUNT.TUESDAY_RATIO;
+    discountRate = Math.max(discountRate, DISCOUNT.TUESDAY_RATIO);
   }
 
   // 상태 한 번에 업데이트
@@ -76,11 +71,11 @@ export const calculateCart = () => {
   });
 
   // UI 업데이트
-  paymentInfo.textContent = '총액: ' + Math.round(newTotalAmount) + '원';
-  if (discRate > 0) {
+  paymentInfo.textContent = `총액: ${Math.round(newTotalAmount)}원`;
+  if (discountRate > 0) {
     const span = createElement('span', {
       className: 'text-green-500 ml-2',
-      textContent: `(${(discRate * 100).toFixed(1)}% 할인 적용)`,
+      textContent: `(${(discountRate * 100).toFixed(1)}% 할인 적용)`,
     });
     paymentInfo.appendChild(span);
   }
