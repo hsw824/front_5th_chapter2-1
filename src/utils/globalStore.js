@@ -12,4 +12,5 @@ export const globalStore = createStore({
   prodList: initProdList,
   totalAmount: 0,
   itemCount: 0,
+  lastSelectedItemId: 'p1',
 });
