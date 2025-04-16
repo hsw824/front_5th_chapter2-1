@@ -1,8 +1,14 @@
 import { createElement } from '../../utils/createElement';
+import { globalStore } from '../../utils/globalStore';
 
-export const updateSelOpts = (select, items) => {
+export const setSelectOptions = () => {
+  const { prodList } = globalStore.getState();
+  const select = document.getElementById('product-select');
+
+  if (!select) return;
   select.innerHTML = '';
-  items.forEach(function (item) {
+
+  prodList.forEach((item) => {
     const option = createElement('option', {
       value: item.id,
       textContent: `${item.name} - ${item.price}원`,
