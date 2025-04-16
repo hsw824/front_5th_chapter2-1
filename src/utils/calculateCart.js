@@ -1,4 +1,4 @@
-import { renderBonusPts } from '../utils/renderBonusPts';
+import { renderBonusPoints } from './renderBonusPoints';
 import { updateStockInfo } from '../utils/updateStockInfo';
 import { createElement } from './createElement';
 import { globalStore } from './globalStore';
@@ -86,5 +86,5 @@ export const calculateCart = () => {
   }
 
   updateStockInfo();
-  renderBonusPts();
+  renderBonusPoints();
 };
