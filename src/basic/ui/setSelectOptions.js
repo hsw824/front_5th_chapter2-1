@@ -1,5 +1,5 @@
-import { createElement } from '../../utils/createElement';
-import { globalStore } from '../../utils/globalStore';
+import { createElement } from '../utils/createElement';
+import { globalStore } from '../store/globalStore';
 
 export const setSelectOptions = () => {
   const { prodList } = globalStore.getState();

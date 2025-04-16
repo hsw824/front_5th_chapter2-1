@@ -1,4 +1,4 @@
-import { globalStore } from './globalStore';
+import { globalStore } from '../store/globalStore';
 
 const setStockInfoText = (quantity) => {
   return quantity > 0 ? `재고 부족 ( ${quantity} 개 남음)` : '품절';

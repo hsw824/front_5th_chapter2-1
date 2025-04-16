@@ -1,5 +1,5 @@
 import { TIMER_NUMBER, SALE_NUMBER } from '../constant/randomNumber';
-import { globalStore } from './globalStore';
+import { globalStore } from '../store/globalStore';
 
 let timer = null;
 

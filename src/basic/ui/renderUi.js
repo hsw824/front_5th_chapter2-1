@@ -1,7 +1,6 @@
-import { setSelectOptions } from '../components/cart/setSelectOptions';
-import { calculateCart } from './calculateCart';
-import { createElement } from './createElement';
-
+import { createElement } from '../utils/createElement';
+import { setSelectOptions } from '../ui/setSelectOptions';
+import { calculateCart } from '../service/calculateCart';
 export const renderUi = () => {
   // 컴포넌트 혹은 따로 선언 분리
   const root = document.getElementById('app');

@@ -1,7 +1,7 @@
 import { ALERT_MESSAGE } from '../constant/alertMessage';
-import { calculateCart } from './calculateCart';
-import { createElement } from './createElement';
-import { globalStore } from './globalStore';
+import { calculateCart } from '../service/calculateCart';
+import { globalStore } from '../store/globalStore';
+import { createElement } from '../utils/createElement';
 
 const { getState, setState } = globalStore;
 const { prodList } = getState();

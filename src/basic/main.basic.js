@@ -1,6 +1,6 @@
-import { renderUi } from '../utils/renderUi';
-import { setEventListener } from '../utils/setEventListener';
-import { setTimer } from '../utils/setTimer';
+import { setEventListener } from './events/setEventListener';
+import { setTimer } from './service/setTimer';
+import { renderUi } from './ui/renderUi';
 
 const main = () => {
   renderUi();

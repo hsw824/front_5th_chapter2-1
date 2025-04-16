@@ -1,6 +1,6 @@
 import { ALERT_MESSAGE } from '../constant/alertMessage';
-import { calculateCart } from './calculateCart';
-import { globalStore } from './globalStore';
+import { calculateCart } from '../service/calculateCart';
+import { globalStore } from '../store/globalStore';
 
 const { getState } = globalStore;
 const { prodList } = getState();

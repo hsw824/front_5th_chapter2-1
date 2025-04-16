@@ -1,5 +1,5 @@
-import { createElement } from './createElement';
-import { globalStore } from './globalStore';
+import { createElement } from '../utils/createElement';
+import { globalStore } from '../store/globalStore';
 
 export const renderBonusPoints = () => {
   const { getState } = globalStore;

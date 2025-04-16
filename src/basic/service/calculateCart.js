@@ -1,7 +1,7 @@
-import { renderBonusPoints } from './renderBonusPoints';
-import { updateStockInfo } from '../utils/updateStockInfo';
-import { createElement } from './createElement';
-import { globalStore } from './globalStore';
+import { renderBonusPoints } from '../ui/renderBonusPoints';
+import { updateStockInfo } from '../ui/updateStockInfo';
+import { createElement } from '../utils/createElement';
+import { globalStore } from '../store/globalStore';
 import { DISCOUNT } from '../constant/randomNumber';
 
 const isTuesday = () => {
