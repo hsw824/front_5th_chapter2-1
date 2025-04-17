@@ -1,13 +1,10 @@
 import ProductSelectItem from './ProductSelectItem';
 
-import { useProdListContext } from '../store/ProdListContext';
+import { useProdListContext } from '../store/prodList/ProdListContext';
+import { useSelectContext } from '../store/select/SelectContext';
 
-interface PropsType {
-  select: string;
-  handleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-}
-
-const ProductSelect = ({ select, handleChange }: PropsType) => {
+const ProductSelect = () => {
+  const { select, handleChange } = useSelectContext();
   const { prodList } = useProdListContext();
   return (
     <select className="border rounded p-2 mr-2" onChange={handleChange} value={select}>
