@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { initProdList, ProdListType } from '../constants/initialValue';
 import { ProdListContext } from './ProdListContext';
+import { initProdList, ProdListType } from '../../constants/initialValue';
 
 const ProdListProvider = ({ children }: { children: React.ReactNode }) => {
   const [prodList, setProdList] = useState<ProdListType[]>(() => initProdList);

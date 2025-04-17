@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import { ProdListType } from '../constants/initialValue';
+import { ProdListType } from '../../constants/initialValue';
 
 interface ProdListContextType {
   prodList: ProdListType[];
