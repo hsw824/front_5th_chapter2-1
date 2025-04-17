@@ -17,6 +17,15 @@ export default defineConfig([
     languageOptions: {
       globals: globals.browser,
     },
+    parserOptions: {
+      ecmaVersion: 'latest',
+      ecmaFeatures: {
+        jsx: true,
+      },
+      sourceType: 'module',
+      project: './tsconfig.eslint.json',
+    },
+
     rules: {
       'no-unused-vars': 'error',
       'no-undef': 'error',
