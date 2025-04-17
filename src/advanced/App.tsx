@@ -6,27 +6,24 @@ import PaymentInfo from './components/PaymentInfo';
 import ProductSelect from './components/ProductSelect';
 import SoldOutInfo from './components/SoldOutInfo';
 import Wrapper from './components/Wrapper';
-import ProdListProvider from './store/ProdListProvider';
-
-import { useState } from 'react';
+import ProdListProvider from './store/prodList/ProdListProvider';
+import SelectProvider from './store/select/SelectProvider';
 
 function App() {
-  const [select, setSelect] = useState('p1');
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelect(e.target.value);
-  };
   return (
     <Container>
-      <Wrapper>
-        <ProdListProvider>
-          <CartTitle />
-          <OrderedList />
-          <PaymentInfo />
-          <ProductSelect select={select} handleChange={handleChange} />
-          <AddButton select={select} />
-          <SoldOutInfo />
-        </ProdListProvider>
-      </Wrapper>
+      <ProdListProvider>
+        <SelectProvider>
+          <Wrapper>
+            <CartTitle />
+            <OrderedList />
+            <PaymentInfo />
+            <ProductSelect />
+            <AddButton />
+            <SoldOutInfo />
+          </Wrapper>
+        </SelectProvider>
+      </ProdListProvider>
     </Container>
   );
 }
