@@ -1,6 +1,6 @@
 import OrderedItem from './OrderdItem';
 
-import { useProdListContext } from '../store/ProdListContext';
+import { useProdListContext } from '../store/prodList/ProdListContext';
 
 const OrderedList = () => {
   const { prodList } = useProdListContext();
@@ -9,7 +9,7 @@ const OrderedList = () => {
       {prodList
         .filter((item) => item.cartCount > 0)
         .map((item) => {
-          return <OrderedItem key={item.id} {...item} prodList={prodList} />;
+          return <OrderedItem key={item.id} {...item} />;
         })}
     </div>
   );

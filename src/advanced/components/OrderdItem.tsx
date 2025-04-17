@@ -1,4 +1,6 @@
-import { useProdListContext } from '../store/ProdListContext';
+import { useEffect } from 'react';
+import { useProdListContext } from '../store/prodList/ProdListContext';
+import { ALERT_MESSAGE } from '../constants/alertMessage';
 
 interface PropsType {
   name: string;
@@ -13,7 +15,7 @@ const OrderedItem = ({ name, price, cartCount, id }: PropsType) => {
   const handleDecreaseQuantity = () => {
     const targetItem = prodList.find((item) => item.id === id);
 
-    if (!targetItem || targetItem.quantity <= 0) return;
+    if (!targetItem) return;
 
     setProdList(
       prodList.map((item) => {
@@ -28,7 +30,12 @@ const OrderedItem = ({ name, price, cartCount, id }: PropsType) => {
   const handleIncreaseQuantity = () => {
     const targetItem = prodList.find((item) => item.id === id);
 
-    if (!targetItem || targetItem.quantity <= 0) return;
+    if (!targetItem) return;
+
+    if (targetItem.quantity <= 0) {
+      alert(ALERT_MESSAGE.OUT_OF_STOCK);
+      return;
+    }
 
     setProdList(
       prodList.map((item) => {
@@ -55,7 +62,7 @@ const OrderedItem = ({ name, price, cartCount, id }: PropsType) => {
   return (
     <div className="flex justify-between items-center mb-2">
       <span>
-        {name} - {price} x {cartCount}
+        {name} - {price}원 x {cartCount}
       </span>
       <div>
         <button className="bg-blue-500 text-white px-2 py-1 rounded mr-1" onClick={handleDecreaseQuantity}>
