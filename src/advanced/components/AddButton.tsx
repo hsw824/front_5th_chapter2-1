@@ -1,16 +1,19 @@
-import { useProdListContext } from '../store/ProdListContext';
+import { ALERT_MESSAGE } from '../constants/alertMessage';
+import { useProdListContext } from '../store/prodList/ProdListContext';
+import { useSelectContext } from '../store/select/SelectContext';
 
-interface PropTypes {
-  select: string;
-}
-
-const AddButton = ({ select }: PropTypes) => {
+const AddButton = () => {
+  const { select } = useSelectContext();
   const { prodList, setProdList } = useProdListContext();
   const handleClick = () => {
     const targetItem = prodList.find((item) => item.id === select);
 
-    if (!targetItem || targetItem.quantity <= 0) return;
+    if (!targetItem) return;
 
+    if (targetItem.quantity <= 0) {
+      alert(ALERT_MESSAGE.OUT_OF_STOCK);
+      return;
+    }
     setProdList(
       prodList.map((item) => {
         if (item.id === select) {
