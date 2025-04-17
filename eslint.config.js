@@ -9,24 +9,24 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 export default defineConfig([
   {
     files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
-    plugins: { js, prettier: eslintPluginPrettier },
-    extends: ['js/recommended'],
-  },
-  {
-    files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
-    languageOptions: { globals: globals.browser },
-  },
-  {
+    plugins: {
+      js,
+      prettier: eslintPluginPrettier,
+      react: pluginReact,
+    },
+    languageOptions: {
+      globals: globals.browser,
+    },
     rules: {
       'no-unused-vars': 'error',
       'no-undef': 'error',
       'no-var': 'error',
       'no-console': 'warn',
       'prefer-const': 'error',
-
       'prettier/prettier': 'error',
       'react/jsx-uses-vars': 'error',
       '@typescript-eslint/no-explicit-any': 'warn',
+      'react/react-in-jsx-scope': 'off',
     },
   },
   tseslint.configs.recommended,
